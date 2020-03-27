@@ -1,0 +1,10 @@
+[
+    {
+        "name": "APP1",
+        "url": "http://192.168.56.150:4201/autologin"
+    },
+    {
+        "name": "APP2",
+        "url": "http://192.168.56.150:4202/autologin"
+    }
+]

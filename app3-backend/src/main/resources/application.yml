@@ -1,0 +1,9 @@
+server:
+  port: 8083
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://192.168.56.150:18080/auth/realms/universal

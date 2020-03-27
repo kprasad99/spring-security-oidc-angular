@@ -1,0 +1,42 @@
+<mat-toolbar color="primary">
+    <div fxLayout="row" style="width: 100%;" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <div><img style="width: 36px; height: 36px;" src="assets/icons/icon-72x72.png" /></div>
+        <button mat-icon-button><mat-icon>apps</mat-icon></button>
+        <div fxFlex fxFlexFill>
+        </div>
+        <div>
+            <mat-menu #appMenu="matMenu">
+                <button mat-menu-item (click)="logout()">Logout</button>
+            </mat-menu>
+            <button mat-button [matMenuTriggerFor]="appMenu">
+                <span>{{userData?.name}}</span>
+            </button>
+        </div>
+    </div>
+</mat-toolbar>
+<div style="height: calc(100vh-64px); width: 100%; padding: 15px;">
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Admin</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                {{ adminReqData }}
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button (click)="admin()">click me</button>
+            </mat-card-actions>
+        </mat-card>
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>User</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                {{ userReqData }}
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button (click)="user()">click me</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
