@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   keycloak:
-    image: jboss/keycloak
+    image: jboss/keycloak:10.0.1
     networks:
     - k-network
     ports:
