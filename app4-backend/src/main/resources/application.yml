@@ -6,11 +6,11 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri:  http://192.168.56.150:18080/auth/realms/universal
+          issuer-uri:  http://192.168.56.121:18080/auth/realms/universal
       client:
         provider:
           keycloak:
-            issuer-uri: http://192.168.56.150:18080/auth/realms/universal
+            issuer-uri: http://192.168.56.121:18080/auth/realms/universal
         registration:
           keycloak:
             client-id: kp_app4

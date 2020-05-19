@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthorizationState, AuthorizationResult, OidcSecurityService } from 'angular-auth-oidc-client';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,24 +7,33 @@ import { Router } from '@angular/router';
   template: `<router-outlet></router-outlet>`
 })
 export class AppComponent {
+
+  userData: any;
+  isAuthenticated: boolean;
+
   constructor(public oidcSecurityService: OidcSecurityService,
     private router: Router
   ) {
-    if (this.oidcSecurityService.moduleSetup) {
-      this.onOidcModuleSetup();
-    } else {
-      this.oidcSecurityService.onModuleSetup.subscribe(() => {
-        this.onOidcModuleSetup();
-      });
-    }
 
-    this.oidcSecurityService.onAuthorizationResult.subscribe(
-      (authorizationResult: AuthorizationResult) => {
-        this.onAuthorizationResultComplete(authorizationResult);
-      });
   }
 
   ngOnInit() {
+    this.oidcSecurityService
+      .checkAuth()
+
+      .subscribe((isAuthenticated) => {
+        if (!isAuthenticated) {
+          console.log(window.location.pathname);
+          if ('/autologin' !== window.location.pathname) {
+            this.write('redirect', window.location.pathname);
+            this.router.navigate(['/autologin']);
+          }
+        }
+        if (isAuthenticated) {
+          console.log("logged-in");
+          this.navigateToStoredEndpoint();
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -45,37 +54,23 @@ export class AppComponent {
     this.oidcSecurityService.logoff();
   }
 
-  private onOidcModuleSetup() {
-   if (window.location.hash) {
-      this.oidcSecurityService.authorizedImplicitFlowCallback();
-    } else {
-      if ('/autologin' !== window.location.pathname) {
-        this.write('redirect', window.location.pathname);
-      }
-      console.log('AppComponent:onModuleSetup');
-      this.oidcSecurityService.getIsAuthorized().subscribe((authorized: boolean) => {
-        if (!authorized) {
-          this.router.navigate(['/autologin']);
-        }
-      });
-    }
-  }
-
-  private onAuthorizationResultComplete(authorizationResult: AuthorizationResult) {
-    console.log('AppComponent:onAuthorizationResultComplete');
+  private navigateToStoredEndpoint() {
     const path = this.read('redirect');
-    if (authorizationResult.authorizationState === AuthorizationState.authorized) {
-      if (path) {
-        this.router.navigate([path]);
-      }
+
+    if (this.router.url === path) {
+      return;
+    }
+
+    if (path.toString().includes('/unauthorized')) {
+      this.router.navigate(['/']);
     } else {
-      this.router.navigate(['/unauthorized']);
+      this.router.navigate([path]);
     }
   }
 
   private read(key: string): any {
     const data = localStorage.getItem(key);
-    if (data != null) {
+    if (data) {
       return JSON.parse(data);
     }
 
@@ -85,4 +80,5 @@ export class AppComponent {
   private write(key: string, value: any): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
+
 }

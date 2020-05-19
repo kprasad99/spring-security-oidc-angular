@@ -34,6 +34,6 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
   }
 
   checkToken() {
-    return this.auth.getIsAuthorized();
+    return this.auth.checkAuth();
   }
 }

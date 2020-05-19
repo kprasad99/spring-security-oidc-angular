@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloRest {
 
-	@PreAuthorize("hasRole('APP1_ADMIN")
+	@PreAuthorize("hasRole('APP1_ADMIN')")
 	@GetMapping("/admin")
 	public String admin(OAuth2AuthenticationToken token) {
 		return "Hello from admin of APP4";

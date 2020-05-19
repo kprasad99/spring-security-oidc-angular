@@ -17,13 +17,14 @@ export class HomeLayoutComponent implements OnInit {
   constructor(public oidcSecurityService: OidcSecurityService, private auth: AuthService, private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.oidcSecurityService.getUserData().subscribe(userData => {
+    this.oidcSecurityService.userData$.subscribe(userData => {
       this.userData = userData;
     });
   }
 
   logout() {
-
+    this.oidcSecurityService.logoffLocal();
+    this.userData = undefined;
   }
 
   admin() {
